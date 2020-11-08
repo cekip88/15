@@ -1,0 +1,92 @@
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	color: #000;
+	border: none;
+	background-color: transparent;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+body{
+	font-size: 14px;
+}
+.row{
+	width: 300px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	padding: 20px 0;
+}
+.btn{
+	font: 500 14px sans-serif;
+	color: #fff;
+	border-radius: 5px;
+	background-color: orangered;
+	padding: 10px 5px;
+}
+.steps span,.time span{
+	display: block;
+	text-align: center;
+}
+.steps{
+	margin-left: auto;
+}
+.time{
+	margin-left: 10px;
+}
+
+.gameBody{
+	width: 302px;
+	height: 302px;
+	border: 1px solid #000;
+	margin: 0 auto;
+	padding: 1px;
+	overflow: hidden;
+	border-radius: 5px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.bone{
+	background-color: darkgreen;
+	border-radius: 5px;
+	margin: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.bone span{
+	width: 75%;
+	height: 75%;
+	border-radius: 3px;
+	box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+	color: #fff;
+	font-family: "Arial Black";
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loadBtn{
+	margin-right: auto;
+}
+
+@media screen and (min-width: 768px){
+	body{
+		font-size: 16px;
+	}
+	.row{
+		width: 600px;
+	}
+	.btn{
+		padding: 10px 30px;
+	}
+	.gameBody{
+		width: 600px;
+		height: 600px;
+	}
+	.bone span{
+		font-size: 24px;
+	}
+}
