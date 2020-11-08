@@ -50,9 +50,9 @@ class Game {
 		if (typeof size !== 'number') return;
 		let int = (size * size) - 1,
 				body = document.querySelector('.gameBody'),
-				wh = `calc((100% / ${size}) - 2px)`;
+				wh = `calc(100% / ${size})`;
 		for (let i = 0; i < int; i++){
-			body.append(_.createEl('BUTTON','bone',{'style' : `height:${wh};width:${wh}`,'children' : [
+			body.append(_.createEl('BUTTON',`bone pos${i + 1}`,{'style' : `height:${wh};width:${wh}`,'children' : [
 					_.createEl('SPAN',null,{'text' : i + 1})
 				]}))
 		}

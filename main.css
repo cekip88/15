@@ -37,35 +37,87 @@ body{
 }
 
 .gameBody{
-	width: 302px;
-	height: 302px;
+	width: 300px;
+	height: 300px;
 	border: 1px solid #000;
 	margin: 0 auto;
-	padding: 1px;
 	overflow: hidden;
 	border-radius: 5px;
 	display: flex;
 	flex-wrap: wrap;
+	position: relative;
 }
 .bone{
 	background-color: darkgreen;
+	border: 1px solid #fff;
 	border-radius: 5px;
-	margin: 1px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: .5s ease;
 }
 .bone span{
 	width: 75%;
 	height: 75%;
 	border-radius: 3px;
-	box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+	box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
 	color: #fff;
 	font-family: "Arial Black";
 	font-size: 18px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+.pos1{
+	transform: translate(0,0);
+}
+.pos2{
+	transform: translate(100%,0);
+}
+.pos3{
+	transform: translate(200%,0);
+}
+.pos4{
+	transform: translate(300%,0);
+}
+.pos5{
+	transform: translate(0,100%);
+}
+.pos6{
+	transform: translate(100%,100%);
+}
+.pos7{
+	transform: translate(200%,100%);
+}
+.pos8{
+	transform: translate(300%,100%);
+}
+.pos9{
+	transform: translate(0,200%);
+}
+.pos10{
+	transform: translate(100%,200%);
+}
+.pos11{
+	transform: translate(200%,200%);
+}
+.pos12{
+	transform: translate(300%,200%);
+}
+.pos13{
+	transform: translate(0,300%);
+}
+.pos14{
+	transform: translate(100%,300%);
+}
+.pos15{
+	transform: translate(200%,300%);
+}
+.pos16{
+	transform: translate(300%,300%);
 }
 
 .loadBtn{
