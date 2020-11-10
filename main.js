@@ -84,7 +84,7 @@ class Game {
 
 
 	// создает разметку игровой страницы
-	createPageTmp(time = null,steps = null){
+	createPageTmp(time = null,steps = null,save = null){
 		const _ = this;
 		let sec = time ? time[2] : '00',
 				min = time ? time[1] : '00',
@@ -111,10 +111,12 @@ class Game {
 					]})
 			]});
 		let body = _.createEl('DIV','gameBody');
-		let bottomRow = _.createEl('DIV','row',{'children' : [
-				_.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'}),
-				_.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'})
-			]});
+		let bottomRow = _.createEl('DIV','row');
+		let loadBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
+		let saveBtn = _.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
+		if (!save) loadBtn.classList.add('inactive');
+		bottomRow.append(loadBtn);
+		bottomRow.append(saveBtn);
 		document.querySelector('body').append(title,row,body,bottomRow);
 
 
@@ -125,10 +127,10 @@ class Game {
 				_.gameStarted()
 			}
 		});
-		bottomRow.querySelector('.loadBtn').addEventListener('click',function () {
+		loadBtn.addEventListener('click',function () {
 			_.loadGame();
 		});
-		bottomRow.querySelector('.saveBtn').addEventListener('click',function () {
+		saveBtn.addEventListener('click',function () {
 			_.saveGame();
 		});
 	}
@@ -262,12 +264,15 @@ class Game {
 		saveData.positions = _.positions;
 		saveData = JSON.stringify(saveData);
 		localStorage.setItem('15',saveData);
+		if (document.querySelector('.loadBtn').classList.contains('inactive')) document.querySelector('.loadBtn').classList.remove('inactive');
 	}
 	loadGame(){
 		const _ = this;
 		let loadData = localStorage.getItem('15');
-		loadData = JSON.parse(loadData);
-		_.loadedGame(loadData);
+		if (loadData){
+			loadData = JSON.parse(loadData);
+			_.loadedGame(loadData);
+		}
 	}
 
 

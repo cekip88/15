@@ -184,6 +184,10 @@ body{
 	height: calc(100% / 8);
 }
 
+.inactive{
+	opacity: .5;
+	background-color: gray;
+}
 
 
 #pos3-1{transform:translate(0%,0%)}
