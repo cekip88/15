@@ -67,7 +67,9 @@ class Game {
 		const _ = this;
 		_.start = false;
 		_.clearTpl(document.querySelector('body'));
-		_.createPageTmp();
+		let load = false;
+		if (localStorage.getItem('15')) load = true;
+		_.createPageTmp(null,null,load);
 		_.createFieldObject();
 		_.createField();
 	}
