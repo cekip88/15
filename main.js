@@ -398,6 +398,16 @@ class Game {
 			_.createEl('SPAN','finish-score-title',{'text' : 'Количество ходов: '}),
 			_.createEl('SPAN','finish-score-span',{'text' : steps})
 			]});
+		if (time){
+			let min = Math.floor(time / 60);
+			let hr = Math.floor(min / 60);
+			min = min % 60;
+			let sec = time % 60;
+			if (min < 10) min = '0' + min;
+			if (hr < 10) hr = '0' + hr;
+			if (sec < 10) sec = '0' + sec;
+			time = hr + ':' + min + ':' + sec;
+		}
 		let timeCont = _.createEl('DIV','finish-time',{'children' : [
 			_.createEl('SPAN','finish-time-title',{'text' : 'Затраченное время: '}),
 			_.createEl('SPAN','finish-time-span',{'text' : time})
