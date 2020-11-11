@@ -7,6 +7,7 @@
 	background-color: transparent;
 	font-family: sans-serif;
 	box-sizing: border-box;
+	list-style: none;
 }
 body{
 	height: 100vh;
@@ -36,7 +37,7 @@ body{
 }
 .choose{
 	text-align: center;
-	padding: 50px 0;
+	padding: 50px 0 0;
 }
 .choose-title{
 	font-family: "Arial Black";
@@ -48,6 +49,46 @@ body{
 	border: 1px solid darkgreen;
 	border-radius: 3px;
 }
+
+.checkbox{
+	padding: 15px 0 20px;
+	display: flex;
+	align-items: center;
+}
+.checkbox-label{
+	width: 18px;
+	height: 18px;
+	border-radius: 3px;
+	border: 1px solid #000;
+	margin-left: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+.checkbox-label:after{
+	display: block;
+	content: '';
+	width: 12px;
+	height: 12px;
+	border-radius: 2px;
+	transition: .35s ease;
+}
+#checkbox-input{
+	display: none;
+}
+#checkbox-input:checked+.checkbox-label:after{
+	background-color: orangered;
+}
+
+.name{
+	border: 1px solid rgba(0,0,0,0.5);
+	border-radius: 3px;
+	padding: 5px 10px;
+	margin-bottom: 50px;
+	text-align: center;
+}
+
 
 .first-screen-btn{
 	width: 250px;
@@ -101,7 +142,7 @@ body{
 	position: absolute;
 	top: 0;
 	left: 0;
-	transition: .5s ease;
+	transition: .1s ease;
 }
 .bone span{
 	width: 75%;
@@ -114,7 +155,7 @@ body{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: .5s ease;
+	transition: .3s ease;
 }
 .bone:hover{
 	cursor: pointer;
@@ -126,15 +167,40 @@ body{
 .finish-title{
 	font-size: 32px;
 }
-.finish-score{
-	margin-top: 50px;
+.finish-steps{
+	margin-top: 30px;
 }
-.finish-time{
-	margin-bottom: 50px;
+.finish-score{
+	margin-bottom: 30px;
 }
 
 .finish-score-title,.finish-time-title{
 	font-family: "Arial Black";
+}
+
+.finish-scorelist-title span{
+	font-family: "Arial Black";
+}
+.finish-scorelist-title,.finish-scoreitem{
+	width: 220px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+}
+.finish-scorelist-title span:first-child,.finish-scoreitem span:first-child{
+	flex: 0 0 10%;
+}
+.finish-scorelist-title span:nth-child(2),.finish-scoreitem span:nth-child(2){
+	flex: 0 0 60%;
+}
+.finish-scorelist-title span:last-child,.finish-scoreitem span:last-child{
+	flex: 0 0 30%;
+}
+.finish-scorelist{
+	margin-bottom: 30px;
+}
+.finish-scoreitem{
+	margin-top: 5px;
 }
 
 @media screen and (min-width: 768px){
