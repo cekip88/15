@@ -53,7 +53,7 @@ class Game {
 			]});
 		let img = _.createEl('DIV','img',{'children' : [
 			_.createEl('SPAN','choose-title', {'text' : 'Картинка: '}),
-			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'img-input', 'checked':true}),
+			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'img-input'}),
 			_.createEl('LABEL','checkbox-label',{'for' : 'img-input'})
 			]});
 
