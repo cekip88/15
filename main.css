@@ -21,6 +21,7 @@ body{
 
 
 .btn{
+	min-width: 80px;
 	font: 500 14px sans-serif;
 	color: #fff;
 	border-radius: 5px;
@@ -50,10 +51,13 @@ body{
 	border-radius: 3px;
 }
 
-.checkbox{
-	padding: 15px 0 20px;
+.checkbox,.img{
+	padding: 15px 0 0;
 	display: flex;
 	align-items: center;
+}
+.img{
+	padding: 15px 0 20px;
 }
 .checkbox-label{
 	width: 18px;
@@ -77,7 +81,13 @@ body{
 #checkbox-input{
 	display: none;
 }
+#img-input{
+	display: none;
+}
 #checkbox-input:checked+.checkbox-label:after{
+	background-color: orangered;
+}
+#img-input:checked+.checkbox-label:after{
 	background-color: orangered;
 }
 
@@ -135,7 +145,7 @@ body{
 .bone{
 	background-color: darkgreen;
 	border: 1px solid #fff;
-	border-radius: 5px;
+	border-radius: 3px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -254,6 +264,214 @@ body{
 	opacity: .5;
 	background-color: gray;
 }
+
+
+.pos3-1{background-size:400%;border:none;background-position:0 0;}
+.pos3-2{background-size:400%;border:none;background-position:33.333333333333336% 0;}
+.pos3-3{background-size:400%;border:none;background-position:66.66666666666667% 0;}
+.pos3-4{background-size:400%;border:none;background-position:0 33.333333333333336%;}
+.pos3-5{background-size:400%;border:none;background-position:33.333333333333336% 33.333333333333336%;}
+.pos3-6{background-size:400%;border:none;background-position:66.66666666666667% 33.333333333333336%;}
+.pos3-7{background-size:400%;border:none;background-position:0 66.66666666666667%;}
+.pos3-8{background-size:400%;border:none;background-position:33.333333333333336% 66.66666666666667%;}
+.pos3-9{background-size:400%;border:none;background-position:66.66666666666667% 66.66666666666667%;}
+
+.pos4-1{background-size:500%;border:none;background-position:0 0;}
+.pos4-2{background-size:500%;border:none;background-position:25% 0;}
+.pos4-3{background-size:500%;border:none;background-position:50% 0;}
+.pos4-4{background-size:500%;border:none;background-position:75% 0;}
+.pos4-5{background-size:500%;border:none;background-position:0 25%;}
+.pos4-6{background-size:500%;border:none;background-position:25% 25%;}
+.pos4-7{background-size:500%;border:none;background-position:50% 25%;}
+.pos4-8{background-size:500%;border:none;background-position:75% 25%;}
+.pos4-9{background-size:500%;border:none;background-position:0 50%;}
+.pos4-10{background-size:500%;border:none;background-position:25% 50%;}
+.pos4-11{background-size:500%;border:none;background-position:50% 50%;}
+.pos4-12{background-size:500%;border:none;background-position:75% 50%;}
+.pos4-13{background-size:500%;border:none;background-position:0 75%;}
+.pos4-14{background-size:500%;border:none;background-position:25% 75%;}
+.pos4-15{background-size:500%;border:none;background-position:50% 75%;}
+.pos4-16{background-size:500%;border:none;background-position:75% 75%;}
+
+.pos5-1{background-size:600%;border:none;background-position:0 0;}
+.pos5-2{background-size:600%;border:none;background-position:20% 0;}
+.pos5-3{background-size:600%;border:none;background-position:40% 0;}
+.pos5-4{background-size:600%;border:none;background-position:60% 0;}
+.pos5-5{background-size:600%;border:none;background-position:80% 0;}
+.pos5-6{background-size:600%;border:none;background-position:0 20%;}
+.pos5-7{background-size:600%;border:none;background-position:20% 20%;}
+.pos5-8{background-size:600%;border:none;background-position:40% 20%;}
+.pos5-9{background-size:600%;border:none;background-position:60% 20%;}
+.pos5-10{background-size:600%;border:none;background-position:80% 20%;}
+.pos5-11{background-size:600%;border:none;background-position:0 40%;}
+.pos5-12{background-size:600%;border:none;background-position:20% 40%;}
+.pos5-13{background-size:600%;border:none;background-position:40% 40%;}
+.pos5-14{background-size:600%;border:none;background-position:60% 40%;}
+.pos5-15{background-size:600%;border:none;background-position:80% 40%;}
+.pos5-16{background-size:600%;border:none;background-position:0 60%;}
+.pos5-17{background-size:600%;border:none;background-position:20% 60%;}
+.pos5-18{background-size:600%;border:none;background-position:40% 60%;}
+.pos5-19{background-size:600%;border:none;background-position:60% 60%;}
+.pos5-20{background-size:600%;border:none;background-position:80% 60%;}
+.pos5-21{background-size:600%;border:none;background-position:0 80%;}
+.pos5-22{background-size:600%;border:none;background-position:20% 80%;}
+.pos5-23{background-size:600%;border:none;background-position:40% 80%;}
+.pos5-24{background-size:600%;border:none;background-position:60% 80%;}
+.pos5-25{background-size:600%;border:none;background-position:80% 80%;}
+
+.pos6-1{background-size:700%;border:none;background-position:0 0;}
+.pos6-2{background-size:700%;border:none;background-position:16.666666666666668% 0;}
+.pos6-3{background-size:700%;border:none;background-position:33.333333333333336% 0;}
+.pos6-4{background-size:700%;border:none;background-position:50% 0;}
+.pos6-5{background-size:700%;border:none;background-position:66.66666666666667% 0;}
+.pos6-6{background-size:700%;border:none;background-position:83.33333333333334% 0;}
+.pos6-7{background-size:700%;border:none;background-position:0 16.666666666666668%;}
+.pos6-8{background-size:700%;border:none;background-position:16.666666666666668% 16.666666666666668%;}
+.pos6-9{background-size:700%;border:none;background-position:33.333333333333336% 16.666666666666668%;}
+.pos6-10{background-size:700%;border:none;background-position:50% 16.666666666666668%;}
+.pos6-11{background-size:700%;border:none;background-position:66.66666666666667% 16.666666666666668%;}
+.pos6-12{background-size:700%;border:none;background-position:83.33333333333334% 16.666666666666668%;}
+.pos6-13{background-size:700%;border:none;background-position:0 33.333333333333336%;}
+.pos6-14{background-size:700%;border:none;background-position:16.666666666666668% 33.333333333333336%;}
+.pos6-15{background-size:700%;border:none;background-position:33.333333333333336% 33.333333333333336%;}
+.pos6-16{background-size:700%;border:none;background-position:50% 33.333333333333336%;}
+.pos6-17{background-size:700%;border:none;background-position:66.66666666666667% 33.333333333333336%;}
+.pos6-18{background-size:700%;border:none;background-position:83.33333333333334% 33.333333333333336%;}
+.pos6-19{background-size:700%;border:none;background-position:0 50%;}
+.pos6-20{background-size:700%;border:none;background-position:16.666666666666668% 50%;}
+.pos6-21{background-size:700%;border:none;background-position:33.333333333333336% 50%;}
+.pos6-22{background-size:700%;border:none;background-position:50% 50%;}
+.pos6-23{background-size:700%;border:none;background-position:66.66666666666667% 50%;}
+.pos6-24{background-size:700%;border:none;background-position:83.33333333333334% 50%;}
+.pos6-25{background-size:700%;border:none;background-position:0 66.66666666666667%;}
+.pos6-26{background-size:700%;border:none;background-position:16.666666666666668% 66.66666666666667%;}
+.pos6-27{background-size:700%;border:none;background-position:33.333333333333336% 66.66666666666667%;}
+.pos6-28{background-size:700%;border:none;background-position:50% 66.66666666666667%;}
+.pos6-29{background-size:700%;border:none;background-position:66.66666666666667% 66.66666666666667%;}
+.pos6-30{background-size:700%;border:none;background-position:83.33333333333334% 66.66666666666667%;}
+.pos6-31{background-size:700%;border:none;background-position:0 83.33333333333334%;}
+.pos6-32{background-size:700%;border:none;background-position:16.666666666666668% 83.33333333333334%;}
+.pos6-33{background-size:700%;border:none;background-position:33.333333333333336% 83.33333333333334%;}
+.pos6-34{background-size:700%;border:none;background-position:50% 83.33333333333334%;}
+.pos6-35{background-size:700%;border:none;background-position:66.66666666666667% 83.33333333333334%;}
+.pos6-36{background-size:700%;border:none;background-position:83.33333333333334% 83.33333333333334%;}
+
+.pos7-1{background-size:800%;border:none;background-position:0 0;}
+.pos7-2{background-size:800%;border:none;background-position:14.285714285714286% 0;}
+.pos7-3{background-size:800%;border:none;background-position:28.571428571428573% 0;}
+.pos7-4{background-size:800%;border:none;background-position:42.85714285714286% 0;}
+.pos7-5{background-size:800%;border:none;background-position:57.142857142857146% 0;}
+.pos7-6{background-size:800%;border:none;background-position:71.42857142857143% 0;}
+.pos7-7{background-size:800%;border:none;background-position:85.71428571428572% 0;}
+.pos7-8{background-size:800%;border:none;background-position:0 14.285714285714286%;}
+.pos7-9{background-size:800%;border:none;background-position:14.285714285714286% 14.285714285714286%;}
+.pos7-10{background-size:800%;border:none;background-position:28.571428571428573% 14.285714285714286%;}
+.pos7-11{background-size:800%;border:none;background-position:42.85714285714286% 14.285714285714286%;}
+.pos7-12{background-size:800%;border:none;background-position:57.142857142857146% 14.285714285714286%;}
+.pos7-13{background-size:800%;border:none;background-position:71.42857142857143% 14.285714285714286%;}
+.pos7-14{background-size:800%;border:none;background-position:85.71428571428572% 14.285714285714286%;}
+.pos7-15{background-size:800%;border:none;background-position:0 28.571428571428573%;}
+.pos7-16{background-size:800%;border:none;background-position:14.285714285714286% 28.571428571428573%;}
+.pos7-17{background-size:800%;border:none;background-position:28.571428571428573% 28.571428571428573%;}
+.pos7-18{background-size:800%;border:none;background-position:42.85714285714286% 28.571428571428573%;}
+.pos7-19{background-size:800%;border:none;background-position:57.142857142857146% 28.571428571428573%;}
+.pos7-20{background-size:800%;border:none;background-position:71.42857142857143% 28.571428571428573%;}
+.pos7-21{background-size:800%;border:none;background-position:85.71428571428572% 28.571428571428573%;}
+.pos7-22{background-size:800%;border:none;background-position:0 42.85714285714286%;}
+.pos7-23{background-size:800%;border:none;background-position:14.285714285714286% 42.85714285714286%;}
+.pos7-24{background-size:800%;border:none;background-position:28.571428571428573% 42.85714285714286%;}
+.pos7-25{background-size:800%;border:none;background-position:42.85714285714286% 42.85714285714286%;}
+.pos7-26{background-size:800%;border:none;background-position:57.142857142857146% 42.85714285714286%;}
+.pos7-27{background-size:800%;border:none;background-position:71.42857142857143% 42.85714285714286%;}
+.pos7-28{background-size:800%;border:none;background-position:85.71428571428572% 42.85714285714286%;}
+.pos7-29{background-size:800%;border:none;background-position:0 57.142857142857146%;}
+.pos7-30{background-size:800%;border:none;background-position:14.285714285714286% 57.142857142857146%;}
+.pos7-31{background-size:800%;border:none;background-position:28.571428571428573% 57.142857142857146%;}
+.pos7-32{background-size:800%;border:none;background-position:42.85714285714286% 57.142857142857146%;}
+.pos7-33{background-size:800%;border:none;background-position:57.142857142857146% 57.142857142857146%;}
+.pos7-34{background-size:800%;border:none;background-position:71.42857142857143% 57.142857142857146%;}
+.pos7-35{background-size:800%;border:none;background-position:85.71428571428572% 57.142857142857146%;}
+.pos7-36{background-size:800%;border:none;background-position:0 71.42857142857143%;}
+.pos7-37{background-size:800%;border:none;background-position:14.285714285714286% 71.42857142857143%;}
+.pos7-38{background-size:800%;border:none;background-position:28.571428571428573% 71.42857142857143%;}
+.pos7-39{background-size:800%;border:none;background-position:42.85714285714286% 71.42857142857143%;}
+.pos7-40{background-size:800%;border:none;background-position:57.142857142857146% 71.42857142857143%;}
+.pos7-41{background-size:800%;border:none;background-position:71.42857142857143% 71.42857142857143%;}
+.pos7-42{background-size:800%;border:none;background-position:85.71428571428572% 71.42857142857143%;}
+.pos7-43{background-size:800%;border:none;background-position:0 85.71428571428572%;}
+.pos7-44{background-size:800%;border:none;background-position:14.285714285714286% 85.71428571428572%;}
+.pos7-45{background-size:800%;border:none;background-position:28.571428571428573% 85.71428571428572%;}
+.pos7-46{background-size:800%;border:none;background-position:42.85714285714286% 85.71428571428572%;}
+.pos7-47{background-size:800%;border:none;background-position:57.142857142857146% 85.71428571428572%;}
+.pos7-48{background-size:800%;border:none;background-position:71.42857142857143% 85.71428571428572%;}
+.pos7-49{background-size:800%;border:none;background-position:85.71428571428572% 85.71428571428572%;}
+
+.pos8-1{background-size:900%;border:none;background-position:0 0;}
+.pos8-2{background-size:900%;border:none;background-position:12.5% 0;}
+.pos8-3{background-size:900%;border:none;background-position:25% 0;}
+.pos8-4{background-size:900%;border:none;background-position:37.5% 0;}
+.pos8-5{background-size:900%;border:none;background-position:50% 0;}
+.pos8-6{background-size:900%;border:none;background-position:62.5% 0;}
+.pos8-7{background-size:900%;border:none;background-position:75% 0;}
+.pos8-8{background-size:900%;border:none;background-position:87.5% 0;}
+.pos8-9{background-size:900%;border:none;background-position:0 12.5%;}
+.pos8-10{background-size:900%;border:none;background-position:12.5% 12.5%;}
+.pos8-11{background-size:900%;border:none;background-position:25% 12.5%;}
+.pos8-12{background-size:900%;border:none;background-position:37.5% 12.5%;}
+.pos8-13{background-size:900%;border:none;background-position:50% 12.5%;}
+.pos8-14{background-size:900%;border:none;background-position:62.5% 12.5%;}
+.pos8-15{background-size:900%;border:none;background-position:75% 12.5%;}
+.pos8-16{background-size:900%;border:none;background-position:87.5% 12.5%;}
+.pos8-17{background-size:900%;border:none;background-position:0 25%;}
+.pos8-18{background-size:900%;border:none;background-position:12.5% 25%;}
+.pos8-19{background-size:900%;border:none;background-position:25% 25%;}
+.pos8-20{background-size:900%;border:none;background-position:37.5% 25%;}
+.pos8-21{background-size:900%;border:none;background-position:50% 25%;}
+.pos8-22{background-size:900%;border:none;background-position:62.5% 25%;}
+.pos8-23{background-size:900%;border:none;background-position:75% 25%;}
+.pos8-24{background-size:900%;border:none;background-position:87.5% 25%;}
+.pos8-25{background-size:900%;border:none;background-position:0 37.5%;}
+.pos8-26{background-size:900%;border:none;background-position:12.5% 37.5%;}
+.pos8-27{background-size:900%;border:none;background-position:25% 37.5%;}
+.pos8-28{background-size:900%;border:none;background-position:37.5% 37.5%;}
+.pos8-29{background-size:900%;border:none;background-position:50% 37.5%;}
+.pos8-30{background-size:900%;border:none;background-position:62.5% 37.5%;}
+.pos8-31{background-size:900%;border:none;background-position:75% 37.5%;}
+.pos8-32{background-size:900%;border:none;background-position:87.5% 37.5%;}
+.pos8-33{background-size:900%;border:none;background-position:0 50%;}
+.pos8-34{background-size:900%;border:none;background-position:12.5% 50%;}
+.pos8-35{background-size:900%;border:none;background-position:25% 50%;}
+.pos8-36{background-size:900%;border:none;background-position:37.5% 50%;}
+.pos8-37{background-size:900%;border:none;background-position:50% 50%;}
+.pos8-38{background-size:900%;border:none;background-position:62.5% 50%;}
+.pos8-39{background-size:900%;border:none;background-position:75% 50%;}
+.pos8-40{background-size:900%;border:none;background-position:87.5% 50%;}
+.pos8-41{background-size:900%;border:none;background-position:0 62.5%;}
+.pos8-42{background-size:900%;border:none;background-position:12.5% 62.5%;}
+.pos8-43{background-size:900%;border:none;background-position:25% 62.5%;}
+.pos8-44{background-size:900%;border:none;background-position:37.5% 62.5%;}
+.pos8-45{background-size:900%;border:none;background-position:50% 62.5%;}
+.pos8-46{background-size:900%;border:none;background-position:62.5% 62.5%;}
+.pos8-47{background-size:900%;border:none;background-position:75% 62.5%;}
+.pos8-48{background-size:900%;border:none;background-position:87.5% 62.5%;}
+.pos8-49{background-size:900%;border:none;background-position:0 75%;}
+.pos8-50{background-size:900%;border:none;background-position:12.5% 75%;}
+.pos8-51{background-size:900%;border:none;background-position:25% 75%;}
+.pos8-52{background-size:900%;border:none;background-position:37.5% 75%;}
+.pos8-53{background-size:900%;border:none;background-position:50% 75%;}
+.pos8-54{background-size:900%;border:none;background-position:62.5% 75%;}
+.pos8-55{background-size:900%;border:none;background-position:75% 75%;}
+.pos8-56{background-size:900%;border:none;background-position:87.5% 75%;}
+.pos8-57{background-size:900%;border:none;background-position:0 87.5%;}
+.pos8-58{background-size:900%;border:none;background-position:12.5% 87.5%;}
+.pos8-59{background-size:900%;border:none;background-position:25% 87.5%;}
+.pos8-60{background-size:900%;border:none;background-position:37.5% 87.5%;}
+.pos8-61{background-size:900%;border:none;background-position:50% 87.5%;}
+.pos8-62{background-size:900%;border:none;background-position:62.5% 87.5%;}
+.pos8-63{background-size:900%;border:none;background-position:75% 87.5%;}
+.pos8-64{background-size:900%;border:none;background-position:87.5% 87.5%;}
+
+
 
 
 #pos3-1{transform:translate(0%,0%)}

@@ -6,7 +6,9 @@ class Game {
 		_.init();
 		_.start = false;
 		_.size = 4;
+		_.img = ['img/1.jpg','img/2.jpg','img/3.jpg','img/4.jpg','img/5.jpg','img/6.jpg','img/7.jpg','img/8.jpg','img/9.jpg','img/10.jpg'];
 		_.positions = {};
+		_.record = [];
 	}
 
 	// создает тэги
@@ -46,8 +48,13 @@ class Game {
 		]});
 		let check = _.createEl('DIV','checkbox',{'children' : [
 			_.createEl('SPAN','choose-title', {'text' : 'Перемешивание фишек: '}),
-			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'checkbox-input'}),
+			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'checkbox-input', 'checked':true}),
 			_.createEl('LABEL','checkbox-label',{'for' : 'checkbox-input'})
+			]});
+		let img = _.createEl('DIV','img',{'children' : [
+			_.createEl('SPAN','choose-title', {'text' : 'Картинка: '}),
+			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'img-input', 'checked':true}),
+			_.createEl('LABEL','checkbox-label',{'for' : 'img-input'})
 			]});
 
 
@@ -57,7 +64,7 @@ class Game {
 
 		let button = _.createEl('BUTTON','btn first-screen-btn',{'text' : 'Начать игру'});
 
-		document.querySelector('body').append(title,sizeCount,check,name,button);
+		document.querySelector('body').append(title,sizeCount,check,img,name,button);
 
 		sizeCount.querySelector('input').addEventListener('input',function () {
 			_.startSizeInputCheck(this)
@@ -67,9 +74,11 @@ class Game {
 			if (_.size < 3) _.size = 3;
 			else if (_.size > 8) _.size = 8;
 			_.name = document.querySelector('.name').value;
-			let rand = false;
+			let rand = false,
+					img = false;
 			if(document.querySelector('#checkbox-input').checked) rand = true;
-			_.newGame(rand)
+			if(document.querySelector('#img-input').checked) img = true;
+			_.newGame(rand,img)
 		});
 
 	}
@@ -80,23 +89,25 @@ class Game {
 
 
 	// запускает постройку игровой страницы
-	newGame(rand){
+	newGame(rand,img){
 		const _ = this;
 		localStorage.setItem('15-name',JSON.stringify(_.name));
 		_.start = false;
+		_.record = [];
 		_.clearTpl(document.querySelector('body'));
 		let load = false;
 		if (localStorage.getItem('15')) load = true;
 		_.createPageTmp(null,null,load);
 		_.createFieldObject();
-		_.createField();
+		_.createField(img);
 		if (rand) _.randomMoves();
 	}
-	loadedGame(data){
+	loadedGame(data,img){
 		const _ = this;
 		_.name = data.name;
 		_.start = false;
 		_.size = data.size;
+		_.record = data.record;
 		_.clearTpl(document.querySelector('body'));
 		_.positions = data.positions;
 		let time = data.time;
@@ -104,7 +115,7 @@ class Game {
 		let load = false;
 		if (localStorage.getItem('15')) load = true;
 		_.createPageTmp(time,steps,load);
-		_.createField();
+		_.createField(img);
 	}
 
 
@@ -138,9 +149,11 @@ class Game {
 		let body = _.createEl('DIV','gameBody');
 		let bottomRow = _.createEl('DIV','row');
 		let loadBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
+		let endBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Авто'});
 		let saveBtn = _.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
 		if (!save) loadBtn.classList.add('inactive');
 		bottomRow.append(loadBtn);
+		bottomRow.append(endBtn);
 		bottomRow.append(saveBtn);
 		document.querySelector('body').append(title,row,body,bottomRow);
 
@@ -155,6 +168,9 @@ class Game {
 		loadBtn.addEventListener('click',function () {
 			_.loadGame();
 		});
+		endBtn.addEventListener('click',function () {
+			_.autoGame();
+		});
 		saveBtn.addEventListener('click',function () {
 			_.saveGame();
 		});
@@ -167,27 +183,40 @@ class Game {
 			i < int - 1 ? _.positions[i + 1] = i + 1 : _.positions[i + 1] = null;
 		}
 	}
-
 	// заполняет поле костями по порядку в количестве установленном игроком
-	createField(){
+	createField(img){
 		const _ = this;
+		let imgSrc;
+		if (img){
+			imgSrc = Math.floor(Math.random() * 10);
+			imgSrc = _.img[imgSrc];
+		}
 		let body = document.querySelector('.gameBody');
 		for (let pos in _.positions){
 			if (_.positions[pos]){
-				let btn = _.createEl('BUTTON',`bone pos${_.size}`,{'id':`pos${_.size}-${pos}`,'draggable':true,'children' : [
-						_.createEl('SPAN',null,{'text' : _.positions[pos]})
-					]});
+				let btn;
+				if (!img){
+					btn = _.createEl('BUTTON',`bone pos${_.size}`,{'id':`pos${_.size}-${pos}`,'draggable':true,'children' : [
+							_.createEl('SPAN',null,{'text' : _.positions[pos]})
+						]});
+				} else if (img){
+					btn = _.createEl('BUTTON', `bone pos${_.size} pos${_.size}-${pos}`,{'id' : `pos${_.size}-${pos}`, 'draggable' : true,'style':`background-image:url(${imgSrc})`,'children' : [
+								_.createEl('SPAN',null,{'text' : _.positions[pos],'style':'display:none'})
+							]});
+				}
 				body.append(btn);
 
+
 				btn.addEventListener('click',function () {
-					_.buttonClick(btn);
-					_.stepsCount();
-					_.checkToWin();
+					let cond = _.buttonClick(btn);
+					if (cond){
+						_.move(cond,btn);
+						_.checkToWin();
+					}
 				})
 			}
 		}
 	}
-
 	// рандомно передвигает фишки
 	randomMoves(){
 		const _ = this;
@@ -224,7 +253,6 @@ class Game {
 			let btnNumber = btns[Math.floor(Math.random() * countMoves)];
 			prevBtn = btnNumber;
 			_.move(nl,document.getElementById(`pos${_.size}-${btnNumber}`));
-
 			prevBtn = nl;
 		},100);
 		setTimeout(function () {
@@ -286,15 +314,17 @@ class Game {
 		const _ = this;
 		let id = button.id;
 		let pos = id.split('-')[1] * 1;
+		let condition;
 		if (_.positions[pos + _.size] === null){
-			_.move(pos + _.size,button)
+			condition = pos + _.size
 		} else if (_.positions[pos + 1] === null && (pos % _.size) !== 0){
-			_.move(pos + 1,button)
+			condition = pos + 1
 		} else if (_.positions[pos - 1] === null && ((pos - 1) % _.size) !== 0){
-			_.move(pos - 1,button)
+			condition = pos - 1
 		} else if (_.positions[pos - _.size] === null){
-			_.move(pos - _.size,button)
+			condition = pos - _.size
 		}
+		return condition;
 	}
 	move(condition,button){
 		const _ = this;
@@ -304,12 +334,21 @@ class Game {
 		_.positions[pos] = null;
 		_.positions[condition] = btnNumber;
 		button.id = `pos${_.size}-${condition}`;
+
+		let moveInfo = {pos,button,btnNumber};
+		if (_.record.length){
+			if (moveInfo['btnNumber'] !== _.record[_.record.length - 1].btnNumber) _.record.push(moveInfo);
+			else _.record.pop();
+		} else _.record.push(moveInfo);
+
+		if (_.start) _.stepsCount();
 	}
 	stepsCount(){
 		let stepsCont = document.querySelector('.steps-span');
 		stepsCont.textContent = (stepsCont.textContent * 1) + 1 + '';
 	}
-	checkToWin(){
+	checkToWin(auto = false){
+		const _ = this;
 		let gameBody = document.querySelector('.gameBody');
 		let check = true;
 		for (let i = 0; i < gameBody.children.length; i++){
@@ -321,8 +360,12 @@ class Game {
 			let time = document.querySelector('.time-row').textContent,
 					steps = document.querySelector('.steps-span').textContent;
 
-			this.start = false;
-			this.calcScore(time,steps);
+			_.start = false;
+			if (auto) {
+				time = '00:00:00';
+				steps = 0;
+			}
+			_.calcScore(time,steps);
 		}
 	}
 	calcScore(time,steps){
@@ -331,6 +374,8 @@ class Game {
 		time = ((((time[0] * 1) * 60) + (time[1] * 1)) * 60) + (time[2] * 1);
 		steps = steps * 1;
 		let score = Math.ceil(((_.size * _.size * 1000) - time) / steps);
+
+		if (score === Infinity) score = 0;
 
 		_.leadersListRefresh(score);
 		_.finishScreenTpl(time,steps,score);
@@ -360,6 +405,24 @@ class Game {
 		leadersList = JSON.stringify(leadersList);
 		localStorage.setItem('leadersList',leadersList);
 	}
+	clearScores(time,steps,score){
+		const _ = this;
+		let lead = {
+			1: {score: 0, name: " "},
+			2: {score: 0, name: " "},
+			3: {score: 0, name: " "},
+			4: {score: 0, name: " "},
+			5: {score: 0, name: " "},
+			6: {score: 0, name: " "},
+			7: {score: 0, name: " "},
+			8: {score: 0, name: " "},
+			9: {score: 0, name: " "},
+			10: {score: 0, name: " "}
+		};
+		lead = JSON.stringify(lead);
+		localStorage.setItem('leadersList',lead);
+		_.finishScreenTpl(time,steps,score)
+	}
 
 
 	// сохранение игры
@@ -373,6 +436,7 @@ class Game {
 		saveData.positions = _.positions;
 		saveData.size = _.size;
 		saveData.name = _.name;
+		saveData.record = _.record;
 		saveData = JSON.stringify(saveData);
 		localStorage.setItem('15',saveData);
 		if (document.querySelector('.loadBtn').classList.contains('inactive')) document.querySelector('.loadBtn').classList.remove('inactive');
@@ -385,6 +449,25 @@ class Game {
 			loadData = JSON.parse(loadData);
 			_.loadedGame(loadData);
 		}
+	}
+
+
+	// метод автоматического завершения игры
+	autoGame(){
+		const _ = this;
+
+		let i = _.record.length - 1;
+		let interval = setInterval(function () {
+			_.move(_.record[i]['pos'],_.record[i]['button']);
+			i--;
+		},100);
+		setTimeout(function () {
+			clearInterval(interval);
+			setTimeout(function () {
+				_.checkToWin(true);
+			},100)
+		},(i + 1) * 100);
+
 	}
 
 
@@ -438,11 +521,15 @@ class Game {
 			scoreList.append(li)
 		}
 
-		let newGameBtn = _.createEl('BUTTON','btn',{'text' : 'Начать новую игру'});
+		let clearScoresBtn = _.createEl('BUTTON','btn',{'text' : 'Очистить результаты'});
+		let newGameBtn = _.createEl('BUTTON','btn',{'text' : 'Начать новую игру','style':'margin-top:10px'});
+		clearScoresBtn.addEventListener('click',function () {
+			_.clearScores(time,steps,score);
+		});
 		newGameBtn.addEventListener('click',function () {
 			_.init();
 		});
-		body.append(title,stepsCont,timeCont,size,scoreCont,scoreListTitle,scoreList,newGameBtn)
+		body.append(title,stepsCont,timeCont,size,scoreCont,scoreListTitle,scoreList,clearScoresBtn,newGameBtn)
 	}
 
 	init(){
@@ -453,21 +540,4 @@ class Game {
 		_.positions = {};
 	}
 }
-
 let game = new Game();
-
-/*let int = 8,
-		j = 0,
-		string = '';
-for (let i = 0; i < int * int; i++){
-	let x = 0, y = 0;
-	if (i % int === 0 && i !== 0) j++;
-	if (i >= int * j && i < int * (j + 1)){
-		x = (i - (int * j)) * 100 + '%';
-		y = j * 100 + '%';
-	}
-	let str = `.pos${int}-${i+1}{transform:translate(${x},${y})}`;
-	string += str;
-	string += `\n`;
-}
-console.log(string);*/
