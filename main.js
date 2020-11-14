@@ -38,6 +38,19 @@ class Game {
 		return str;
 	}
 
+	btnsInactiveClassChanger(){
+		let btns = [
+				document.querySelector('.newGameBtn'),
+				document.querySelector('.loadBtn'),
+				document.querySelector('.autoBtn'),
+				document.querySelector('.saveBtn')
+		];
+		btns.forEach(function (btn) {
+			btn.classList.toggle('inactive');
+		})
+
+	}
+
 
 
 	// создает разметку первоначального экрана
@@ -157,7 +170,7 @@ class Game {
 		let body = _.createEl('DIV','gameBody');
 		let bottomRow = _.createEl('DIV','row');
 		let loadBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
-		let autoWinBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Авто'});
+		let autoWinBtn = _.createEl('BUTTON','autoBtn btn',{'text' : 'Авто'});
 		let saveBtn = _.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
 
 		if (!save) loadBtn.classList.add('inactive');
@@ -174,12 +187,12 @@ class Game {
 	}
 	gameScreenHandlers(data){
 		const _ = this;
-		data.newGameBtn.addEventListener('click',function(){_.init()});
+		data.newGameBtn.addEventListener('click',function(){if(_.interactive)_.init()});
 		data.soundBtn.addEventListener('click',function(){_.sound=!_.sound;data.soundBtn.classList.toggle('inactive')});
 		data.body.addEventListener('mousedown',function(){if(!_.start){_.start = true;_.timeAndStepsCount()}});
-		data.loadBtn.addEventListener('click',function(){_.loadGame()});
-		data.autoWinBtn.addEventListener('click',function(){_.autoGame()});
-		data.saveBtn.addEventListener('click',function(){_.saveGame()});
+		data.loadBtn.addEventListener('click',function(){if(_.interactive)_.loadGame()});
+		data.autoWinBtn.addEventListener('click',function(){if(_.interactive)_.autoGame()});
+		data.saveBtn.addEventListener('click',function(){if(_.interactive)_.saveGame()});
 	}
 	// создает объект расположение костяшек
 	createFieldObject(){
@@ -234,6 +247,9 @@ class Game {
 	randomMoves(){
 		const _ = this;
 
+		_.interactive = false;
+		_.btnsInactiveClassChanger();
+
 		let prevBtn = -500;
 		let interval = setInterval(function () {
 			let nl;
@@ -269,7 +285,9 @@ class Game {
 			prevBtn = nl;
 		},100);
 		setTimeout(function () {
-			clearInterval(interval)
+			clearInterval(interval);
+			_.interactive = true;
+			_.btnsInactiveClassChanger();
 		},_.size * 1000)
 //
 	}
@@ -367,6 +385,8 @@ class Game {
 	possibleToMoveCheck(button,direction = null){
 		const _ = this;
 
+		if (!_.interactive) return;
+
 		let
 			pos = button.id.split('-')[1] * 1,
 			condition = 0;
@@ -381,6 +401,8 @@ class Game {
 			if (!direction || direction === 'toTop') condition = pos - _.size;
 		}
 
+
+		if (_.start && condition) _.stepsCount();
 		return condition;
 	}
 	// метод хода
@@ -401,7 +423,6 @@ class Game {
 			else _.record.pop();
 		} else _.record.push(moveInfo);
 
-		if (_.start) _.stepsCount();
 		if (_.sound) {
 			let audio = new Audio('sound.mp3');
 			audio.play();
@@ -410,6 +431,8 @@ class Game {
 	// метод автоматического завершения игры
 	autoGame(){
 		const _ = this;
+		_.interactive = false;
+		_.btnsInactiveClassChanger();
 
 		let i = _.record.length - 1;
 		let interval = setInterval(function () {
@@ -418,6 +441,8 @@ class Game {
 		},100);
 		setTimeout(function () {
 			clearInterval(interval);
+			_.interactive = true;
+			_.btnsInactiveClassChanger();
 			setTimeout(function () {
 				_.checkToWin(true);
 			},100)
@@ -599,6 +624,7 @@ class Game {
 		_.imgSrc = '';
 		_.sound = false;
 		_.positions = {};
+		_.interactive = true;
 	}
 }
 let game = new Game();
