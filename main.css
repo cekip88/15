@@ -24,11 +24,12 @@ button:hover,label:hover,a:hover{
 
 .btn{
 	min-width: 80px;
+	height: 30px;
 	font: 500 14px sans-serif;
 	color: #fff;
 	border-radius: 5px;
 	background-color: orangered;
-	padding: 10px 5px;
+	padding: 0 5px;
 }
 
 
@@ -53,12 +54,12 @@ button:hover,label:hover,a:hover{
 	border-radius: 3px;
 }
 
-.checkbox,.img{
+.checkbox,.sound{
 	padding: 15px 0 0;
 	display: flex;
 	align-items: center;
 }
-.img{
+.sound{
 	padding: 15px 0 20px;
 }
 .checkbox-label{
@@ -79,16 +80,14 @@ button:hover,label:hover,a:hover{
 	border-radius: 2px;
 	transition: .35s ease;
 }
-#checkbox-input{
+#checkbox-input,
+#img-input,
+#sound-input{
 	display: none;
 }
-#img-input{
-	display: none;
-}
-#checkbox-input:checked+.checkbox-label:after{
-	background-color: orangered;
-}
-#img-input:checked+.checkbox-label:after{
+#checkbox-input:checked+.checkbox-label:after,
+#img-input:checked+.checkbox-label:after,
+#sound-input:checked~.checkbox-label:after{
 	background-color: orangered;
 }
 
@@ -171,6 +170,20 @@ button:hover,label:hover,a:hover{
 .bone:hover span{
 	background-color: rgba(0,0,0,0.3);
 }
+.soundBtn{
+	margin-left: 10px;
+	min-width: 30px;
+}
+.soundBtn.inactive{
+	background-color: gray;
+}
+.soundBtn svg{
+	height: 70%;
+}
+.soundBtn svg path{
+	fill: #fff;
+}
+
 
 .finish-title{
 	font-size: 32px;
@@ -219,14 +232,14 @@ button:hover,label:hover,a:hover{
 		font-size: 72px;
 	}
 	.row{
-		width: 600px;
+		width: 500px;
 	}
 	.btn{
-		padding: 10px 30px;
+		height: 37px;
 	}
 	.gameBody{
-		width: 600px;
-		height: 600px;
+		width: 500px;
+		height: 500px;
 	}
 	.bone span{
 		font-size: 24px;

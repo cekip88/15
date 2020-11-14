@@ -59,25 +59,33 @@ class Game {
 			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'checkbox-input', 'checked':true}),
 			_.createEl('LABEL','checkbox-label',{'for' : 'checkbox-input'})
 		]});
-		let img = _.createEl('DIV','img',{'children' : [
+		let img = _.createEl('DIV','checkbox',{'children' : [
 			_.createEl('SPAN','choose-title', {'text' : 'Картинка: '}),
 			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'img-input'}),
 			_.createEl('LABEL','checkbox-label',{'for' : 'img-input'})
 		]});
+		let sound = _.createEl('DIV','sound',{'children' : [
+			_.createEl('SPAN','choose-title', {'text' : 'Звук: '}),
+			_.createEl('LABEL','checkbox-label',{'for' : 'sound-input'})
+		]});
+		let soundCheckbox = _.createEl('INPUT',null,{'type' : 'checkbox','id' : 'sound-input'});
 		let name = _.createEl('INPUT','name',{'type' : 'text','placeholder' : 'Введите Ваше имя'});
 		let button = _.createEl('BUTTON','btn first-screen-btn',{'text' : 'Начать игру'});
 
 		if (_.name) name.value = _.name;
-		document.querySelector('body').append(title,sizeCount,check,img,name,button);
-		_.startScreenHandlers(sizeInput,button,name);
+		sound.prepend(soundCheckbox);
+		document.querySelector('body').append(title,sizeCount,check,img,sound,name,button);
+		_.startScreenHandlers(sizeInput,button,name,soundCheckbox);
 	}
-	startScreenHandlers(sizeInput,button,name){
+	startScreenHandlers(sizeInput,button,name,soundCheckbox){
 		const _ = this;
 		sizeInput.addEventListener('input',function(){
 			sizeInput.value = _.inputNumberCheck(sizeInput.value)
 		});
 		name.addEventListener('change',function(){localStorage.setItem('15-name',JSON.stringify(name.value))});
-
+		soundCheckbox.addEventListener('change',function () {
+			_.sound = soundCheckbox.checked;
+		});
 		button.addEventListener('click',function(){
 			_.size = (sizeInput.value * 1) < 3 ? 3 : sizeInput.value * 1;
 			_.size > 8 ? _.size = 8 : '';
@@ -109,6 +117,7 @@ class Game {
 		_.size = data.size;
 		_.record = data.record;
 		_.imgSrc = data.imgSrc;
+		_.sound = data.sound;
 		_.positions = data.positions;
 
 		_.clearTpl(document.querySelector('body'));
@@ -144,6 +153,7 @@ class Game {
 			]})
 		]});
 		let newGameBtn = _.createEl('BUTTON','newGameBtn btn',{'text' : 'Начать заново'});
+		let soundBtn = _.createEl('BUTTON','soundBtn btn');
 		let body = _.createEl('DIV','gameBody');
 		let bottomRow = _.createEl('DIV','row');
 		let loadBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
@@ -151,17 +161,21 @@ class Game {
 		let saveBtn = _.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
 
 		if (!save) loadBtn.classList.add('inactive');
+		if (!_.sound) soundBtn.classList.add('inactive');
+		soundBtn.innerHTML = `<svg viewBox="0 0 140 200"><path class="cls-1" d="M100,175.69a5,5,0,0,1-3.37-1.31L48.06,130H29.31a5,5,0,0,1-5-5V75a5,5,0,0,1,5-5H48.06L96.63,25.62A5,5,0,0,1,105,29.31V170.69a5,5,0,0,1-5,5ZM34.31,120H50a5,5,0,0,1,3.37,1.31l41.63,38V40.65l-41.63,38A5,5,0,0,1,50,80H34.31Z"/></svg>`;
+		row.prepend(soundBtn);
 		row.prepend(newGameBtn);
 		bottomRow.append(loadBtn);
 		bottomRow.append(autoWinBtn);
 		bottomRow.append(saveBtn);
 		document.querySelector('body').append(title,row,body,bottomRow);
 
-		_.gameScreenHandlers({newGameBtn,body,loadBtn,autoWinBtn,saveBtn});
+		_.gameScreenHandlers({newGameBtn,soundBtn,body,loadBtn,autoWinBtn,saveBtn});
 	}
 	gameScreenHandlers(data){
 		const _ = this;
 		data.newGameBtn.addEventListener('click',function(){_.init()});
+		data.soundBtn.addEventListener('click',function(){_.sound=!_.sound;data.soundBtn.classList.toggle('inactive')});
 		data.body.addEventListener('mousedown',function(){if(!_.start){_.start = true;_.timeAndStepsCount()}});
 		data.loadBtn.addEventListener('click',function(){_.loadGame()});
 		data.autoWinBtn.addEventListener('click',function(){_.autoGame()});
@@ -388,6 +402,10 @@ class Game {
 		} else _.record.push(moveInfo);
 
 		if (_.start) _.stepsCount();
+		if (_.sound) {
+			let audio = new Audio('sound.mp3');
+			audio.play();
+		}
 	}
 	// метод автоматического завершения игры
 	autoGame(){
@@ -502,6 +520,7 @@ class Game {
 		saveData.name = _.name;
 		saveData.record = _.record;
 		saveData.imgSrc = _.imgSrc;
+		saveData.sound = _.sound;
 		saveData = JSON.stringify(saveData);
 		localStorage.setItem('15-save',saveData);
 		if (document.querySelector('.loadBtn').classList.contains('inactive')) document.querySelector('.loadBtn').classList.remove('inactive');
@@ -578,6 +597,7 @@ class Game {
 		_.clearTpl(document.querySelector('body'));
 		_.startScreenTpl();
 		_.imgSrc = '';
+		_.sound = false;
 		_.positions = {};
 	}
 }
