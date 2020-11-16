@@ -1,7 +1,13 @@
+import {Create} from "./modules/create.js";
+import {localSt} from "./modules/ls.js";
+
+
+
 class Game {
 	constructor() {
 		const _ = this;
-
+		_.create = new Create();
+		_.ls = new localSt();
 		_.start = false;
 		_.size = 4;
 		_.img = ['img/1.jpg','img/2.jpg','img/3.jpg','img/4.jpg','img/5.jpg','img/6.jpg','img/7.jpg','img/8.jpg','img/9.jpg','img/10.jpg'];
@@ -9,23 +15,6 @@ class Game {
 		_.record = [];
 
 		_.init();
-	}
-
-	// создает тэги
-	createEl(tag,cls,data={}){
-		let tmp = document.createElement(tag);
-		if (cls) tmp.className = cls;
-		for(let attr in data){
-			if (attr === 'text') {
-				if (tag === 'INPUT' || tag === 'TEXTAREA') tmp.value = data[attr];
-				else tmp.textContent = data[attr];
-			} else if (attr === 'children'){
-				data[attr].forEach(function (elem) {
-					tmp.append(elem);
-				})
-			} else tmp.setAttribute(attr,data[attr]);
-		}
-		return tmp;
 	}
 	// очищает переданный тэг от разметки
 	clearTpl(cont){
@@ -39,6 +28,7 @@ class Game {
 	}
 
 	btnsInactiveClassChanger(){
+		const _ = this;
 		let btns = [
 				document.querySelector('.newGameBtn'),
 				document.querySelector('.loadBtn'),
@@ -46,44 +36,51 @@ class Game {
 				document.querySelector('.saveBtn')
 		];
 		btns.forEach(function (btn) {
-			btn.classList.toggle('inactive');
+			if(_.interactive) {
+				btn.classList.remove('inactive');
+				if(btn.classList.contains("loadBtn")) {
+					if(!_.ls.check('15-save')) btn.classList.add('inactive')
+				}
+			} else {
+				btn.classList.add('inactive');
+			}
 		})
-
 	}
 
 
 
 	// создает разметку первоначального экрана
 	nameCheck(){
-		if (localStorage.getItem('15-name')) {
-			this.name = JSON.parse(localStorage.getItem('15-name'));
+		const _ = this;
+		if (_.ls.check('15-name')) {
+			_.name = _.ls.get('15-name');
 		}
 	}
 	startScreenTpl(){
 		const _ = this;
-		let title = _.createEl('H1','main-title',{'text' : '"Пятнашки"'});
-		let sizeCount = _.createEl('DIV','choose',{'children' : [
-			_.createEl('SPAN','choose-title',{'text' : 'Размеры поля: '})
+		let title = _.create.el('H1','main-title',{'text' : '"Пятнашки"'});
+		let sizeCount = _.create.el('DIV','choose',{'children' : [
+			_.create.el('SPAN','choose-title',{'text' : 'Размеры поля: '})
 		]});
-		let sizeInput = _.createEl('INPUT','choose-input',{'text' : '4'});
+		let sizeInput = _.create.el('INPUT','choose-input',{'text' : '4'});
 		sizeCount.append(sizeInput);
-		let check = _.createEl('DIV','checkbox',{'children' : [
-			_.createEl('SPAN','choose-title', {'text' : 'Перемешивание фишек: '}),
-			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'checkbox-input', 'checked':true}),
-			_.createEl('LABEL','checkbox-label',{'for' : 'checkbox-input'})
+		let check = _.create.el('DIV','checkbox',{'children' : [
+			_.create.el('SPAN','choose-title', {'text' : 'Перемешивание фишек: '}),
+			_.create.el('INPUT',null,{'type' : 'checkbox','id' : 'checkbox-input', 'checked':true}),
+			_.create.el('LABEL','checkbox-label',{'for' : 'checkbox-input'})
 		]});
-		let img = _.createEl('DIV','checkbox',{'children' : [
-			_.createEl('SPAN','choose-title', {'text' : 'Картинка: '}),
-			_.createEl('INPUT',null,{'type' : 'checkbox','id' : 'img-input'}),
-			_.createEl('LABEL','checkbox-label',{'for' : 'img-input'})
+		let img = _.create.el('DIV','checkbox',{'children' : [
+			_.create.el('SPAN','choose-title', {'text' : 'Картинка: '}),
+			_.create.el('INPUT',null,{'type' : 'checkbox','id' : 'img-input'}),
+			_.create.el('LABEL','checkbox-label',{'for' : 'img-input'})
 		]});
-		let sound = _.createEl('DIV','sound',{'children' : [
-			_.createEl('SPAN','choose-title', {'text' : 'Звук: '}),
-			_.createEl('LABEL','checkbox-label',{'for' : 'sound-input'})
+		let sound = _.create.el('DIV','sound',{'children' : [
+			_.create.el('SPAN','choose-title', {'text' : 'Звук: '}),
+			_.create.el('LABEL','checkbox-label',{'for' : 'sound-input'})
 		]});
-		let soundCheckbox = _.createEl('INPUT',null,{'type' : 'checkbox','id' : 'sound-input'});
-		let name = _.createEl('INPUT','name',{'type' : 'text','placeholder' : 'Введите Ваше имя'});
-		let button = _.createEl('BUTTON','btn first-screen-btn',{'text' : 'Начать игру'});
+		let soundCheckbox = _.create.el('INPUT',null,{'type' : 'checkbox','id' : 'sound-input'});
+		let name = _.create.el('INPUT','name',{'type' : 'text','placeholder' : 'Введите Ваше имя'});
+		let button = _.create.el('BUTTON','btn first-screen-btn',{'text' : 'Начать игру'});
 
 		if (_.name) name.value = _.name;
 		sound.prepend(soundCheckbox);
@@ -95,7 +92,7 @@ class Game {
 		sizeInput.addEventListener('input',function(){
 			sizeInput.value = _.inputNumberCheck(sizeInput.value)
 		});
-		name.addEventListener('change',function(){localStorage.setItem('15-name',JSON.stringify(name.value))});
+		name.addEventListener('change',function(){_.ls.set('15-name',name.value)});
 		soundCheckbox.addEventListener('change',function () {
 			_.sound = soundCheckbox.checked;
 		});
@@ -113,12 +110,12 @@ class Game {
 	// методы постройки игровой страницы
 	newGame(rand){
 		const _ = this;
-		_.name ? localStorage.setItem('15-name',JSON.stringify(_.name)) : '';
+		if(_.name) _.ls.set('15-name',_.name);
 		_.start = false;
 		_.record = [];
 
 		_.clearTpl(document.querySelector('body'));
-		_.gameScreenTpl(!!localStorage.getItem('15-save'));
+		_.gameScreenTpl(!!_.ls.check('15-save'));
 		_.createFieldObject();
 		_.createField();
 		rand ? _.randomMoves() : '';
@@ -148,30 +145,30 @@ class Game {
 				hours = time ? time[0] : '00';
 		!steps ? steps = 0 : '';
 
-		let title = _.createEl('H1','main-title main-subtitle',{'text' : '"Пятнашки"'});
-		let row = _.createEl('DIV','row',{'children' : [
-			_.createEl('DIV','steps',{'children' : [
-				_.createEl('SPAN','steps-title',{'text' : 'Ходы: '}),
-				_.createEl('SPAN','steps-span',{'text' : steps})
+		let title = _.create.el('H1','main-title main-subtitle',{'text' : '"Пятнашки"'});
+		let row = _.create.el('DIV','row',{'children' : [
+			_.create.el('DIV','steps',{'children' : [
+				_.create.el('SPAN','steps-title',{'text' : 'Ходы: '}),
+				_.create.el('SPAN','steps-span',{'text' : steps})
 			]}),
-			_.createEl('DIV','time',{'children' : [
-				_.createEl('SPAN','time-title',{'text' : 'Время: '}),
-				_.createEl('DIV','time-row',{'children' : [
-					_.createEl('SPAN','time-hour',{'text' : hours}),
-					_.createEl('SPAN','time-span',{'text' : ':'}),
-					_.createEl('SPAN','time-minute',{'text' : min}),
-					_.createEl('SPAN','time-span',{'text' : ':'}),
-					_.createEl('SPAN','time-second',{'text' : sec})
+			_.create.el('DIV','time',{'children' : [
+				_.create.el('SPAN','time-title',{'text' : 'Время: '}),
+				_.create.el('DIV','time-row',{'children' : [
+					_.create.el('SPAN','time-hour',{'text' : hours}),
+					_.create.el('SPAN','time-span',{'text' : ':'}),
+					_.create.el('SPAN','time-minute',{'text' : min}),
+					_.create.el('SPAN','time-span',{'text' : ':'}),
+					_.create.el('SPAN','time-second',{'text' : sec})
 				]})
 			]})
 		]});
-		let newGameBtn = _.createEl('BUTTON','newGameBtn btn',{'text' : 'Начать заново'});
-		let soundBtn = _.createEl('BUTTON','soundBtn btn');
-		let body = _.createEl('DIV','gameBody');
-		let bottomRow = _.createEl('DIV','row');
-		let loadBtn = _.createEl('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
-		let autoWinBtn = _.createEl('BUTTON','autoBtn btn',{'text' : 'Авто'});
-		let saveBtn = _.createEl('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
+		let newGameBtn = _.create.el('BUTTON','newGameBtn btn',{'text' : 'Начать заново'});
+		let soundBtn = _.create.el('BUTTON','soundBtn btn');
+		let body = _.create.el('DIV','gameBody');
+		let bottomRow = _.create.el('DIV','row');
+		let loadBtn = _.create.el('BUTTON','loadBtn btn',{'text' : 'Загрузить'});
+		let autoWinBtn = _.create.el('BUTTON','autoBtn btn',{'text' : 'Авто'});
+		let saveBtn = _.create.el('BUTTON','saveBtn btn',{'text' : 'Сохранить'});
 
 		if (!save) loadBtn.classList.add('inactive');
 		if (!_.sound) soundBtn.classList.add('inactive');
@@ -209,7 +206,7 @@ class Game {
 
 		for (let pos in _.positions){
 			if (_.positions[pos]){
-				let btn = _.createEl('BUTTON',`bone pos${_.size}`,{
+				let btn = _.create.el('BUTTON',`bone pos${_.size}`,{
 					'id':`pos${_.size}-${pos}`,
 					'draggable':true,
 					'data-number':_.positions[pos]
@@ -219,7 +216,7 @@ class Game {
 					btn.classList.add(`pos${_.size}-${pos}`);
 					btn.setAttribute('style',`background-image:url(${_.imgSrc})`)
 				} else {
-					let span = _.createEl('SPAN',null,{'text' : _.positions[pos]});
+					let span = _.create.el('SPAN',null,{'text' : _.positions[pos]});
 					btn.append(span);
 				}
 
@@ -318,24 +315,23 @@ class Game {
 					min = minutes.textContent * 1,
 					h = hours.textContent * 1;
 
-			function lengthCheck(value){
-				value += '';
-				if (value.length < 2) value = '0' + value;
-				return value;
-			}
-
 			if (sec === 60) {
 				sec = 0;
 				min += 1;
 				if (min === 60){
 					min = 0;
 					h += 1;
-					if (_.start) hours.textContent = lengthCheck(h);
+					if (_.start) hours.textContent = _.lengthCheck(h);
 				}
-				if (_.start) minutes.textContent = lengthCheck(min);
+				if (_.start) minutes.textContent = _.lengthCheck(min);
 			}
-			if (_.start) seconds.textContent = lengthCheck(sec);
+			if (_.start) seconds.textContent = _.lengthCheck(sec);
 		}
+	}
+	lengthCheck(value){
+		value += '';
+		if (value.length < 2) value = '0' + value;
+		return value;
 	}
 	// считает количество ходов
 	stepsCount(){
@@ -456,7 +452,7 @@ class Game {
 		const _ = this;
 
 		let data = e.dataTransfer;
-		let img = _.createEl('IMG');
+		let img = _.create.el('IMG');
 		data.setDragImage(img, 0, 0);
 
 		return {'x':e.x,'y':e.y}
@@ -489,8 +485,8 @@ class Game {
 	leadersListRefresh(score){
 		const _ = this;
 		let leadersList = {};
-		if (localStorage.getItem('leadersList')) {
-			leadersList = JSON.parse(localStorage.getItem('leadersList'));
+		if (_.ls.check('leadersList')) {
+			leadersList = _.ls.get('leadersList');
 		} else {
 			for (let i = 0; i < 10; i++){
 				leadersList[i + 1] = {
@@ -508,8 +504,7 @@ class Game {
 			}
 		}
 
-		leadersList = JSON.stringify(leadersList);
-		localStorage.setItem('leadersList',leadersList);
+		_.ls.set('leadersList',leadersList);
 	}
 	clearScores(time,steps,score){
 		const _ = this;
@@ -525,8 +520,7 @@ class Game {
 			9: {score: 0, name: " "},
 			10: {score: 0, name: " "}
 		};
-		lead = JSON.stringify(lead);
-		localStorage.setItem('leadersList',lead);
+		_.ls.set('leadersList',lead);
 		_.finishScreenTpl(time,steps,score)
 	}
 
@@ -546,12 +540,17 @@ class Game {
 		saveData.record = _.record;
 		saveData.imgSrc = _.imgSrc;
 		saveData.sound = _.sound;
-		saveData = JSON.stringify(saveData);
-		localStorage.setItem('15-save',saveData);
+		_.ls.set('15-save',saveData);
 		if (document.querySelector('.loadBtn').classList.contains('inactive')) document.querySelector('.loadBtn').classList.remove('inactive');
 	}
 	// загрузка игры
-	loadGame(){localStorage.getItem('15-save') ? this.loadedGame(JSON.parse(localStorage.getItem('15-save'))) : '';}
+	loadGame(){
+		const _ = this;
+		if(_.ls.check('15-save')) {
+			let loadedData = _.ls.get('15-save');
+			_.loadedGame(loadedData)
+		}
+	}
 
 
 
@@ -560,10 +559,10 @@ class Game {
 		const _ = this;
 		let body = document.querySelector('body');
 		_.clearTpl(body);
-		let title = _.createEl('H1','main-title finish-title',{'text' : 'Поздравляем! Вы победили!'});
-		let stepsCont = _.createEl('DIV','finish-steps',{'children' : [
-			_.createEl('SPAN','finish-score-title',{'text' : 'Количество ходов: '}),
-			_.createEl('SPAN','finish-score-span',{'text' : steps})
+		let title = _.create.el('H1','main-title finish-title',{'text' : 'Поздравляем! Вы победили!'});
+		let stepsCont = _.create.el('DIV','finish-steps',{'children' : [
+			_.create.el('SPAN','finish-score-title',{'text' : 'Количество ходов: '}),
+			_.create.el('SPAN','finish-score-span',{'text' : steps})
 			]});
 		let curTime;
 		if (time){
@@ -576,38 +575,37 @@ class Game {
 			if (sec < 10) sec = '0' + sec;
 			curTime = hr + ':' + min + ':' + sec;
 		}
-		let timeCont = _.createEl('DIV','finish-time',{'children' : [
-			_.createEl('SPAN','finish-time-title',{'text' : 'Затраченное время: '}),
-			_.createEl('SPAN','finish-time-span',{'text' : curTime})
+		let timeCont = _.create.el('DIV','finish-time',{'children' : [
+			_.create.el('SPAN','finish-time-title',{'text' : 'Затраченное время: '}),
+			_.create.el('SPAN','finish-time-span',{'text' : curTime})
 			]});
-		let size = _.createEl('DIV','finish-size',{'children' : [
-			_.createEl('SPAN','finish-time-title',{'text' : 'Размеры поля: '}),
-			_.createEl('SPAN','finish-time-span',{'text' : _.size})
+		let size = _.create.el('DIV','finish-size',{'children' : [
+			_.create.el('SPAN','finish-time-title',{'text' : 'Размеры поля: '}),
+			_.create.el('SPAN','finish-time-span',{'text' : _.size})
 			]});
-		let scoreCont = _.createEl('DIV','finish-score',{'children' : [
-			_.createEl('SPAN','finish-time-title',{'text' : 'Счет: '}),
-			_.createEl('SPAN','finish-time-span',{'text' : score})
+		let scoreCont = _.create.el('DIV','finish-score',{'children' : [
+			_.create.el('SPAN','finish-time-title',{'text' : 'Счет: '}),
+			_.create.el('SPAN','finish-time-span',{'text' : score})
 			]});
 
-		let scoreListTitle = _.createEl('DIV','finish-scorelist-title',{'children' : [
-				_.createEl('SPAN',null,{'text' : ''}),
-				_.createEl('SPAN',null,{'text' : 'Имя'}),
-				_.createEl('SPAN',null,{'text' : 'Счет'})
+		let scoreListTitle = _.create.el('DIV','finish-scorelist-title',{'children' : [
+				_.create.el('SPAN',null,{'text' : ''}),
+				_.create.el('SPAN',null,{'text' : 'Имя'}),
+				_.create.el('SPAN',null,{'text' : 'Счет'})
 			]});
-		let scoreList = _.createEl('UL','finish-scorelist');
-		let scoreListInfo = localStorage.getItem('leadersList');
-		scoreListInfo = JSON.parse(scoreListInfo);
+		let scoreList = _.create.el('UL','finish-scorelist');
+		let scoreListInfo = _.ls.get('leadersList');
 		for (let scr in scoreListInfo) {
-			let li = _.createEl('LI','finish-scoreitem',{'children' : [
-					_.createEl('SPAN',null,{'text' : `${scr}: `}),
-					_.createEl('SPAN',null,{'text' : scoreListInfo[scr]['name']}),
-					_.createEl('SPAN',null,{'text' : scoreListInfo[scr]['score']})
+			let li = _.create.el('LI','finish-scoreitem',{'children' : [
+					_.create.el('SPAN',null,{'text' : `${scr}: `}),
+					_.create.el('SPAN',null,{'text' : scoreListInfo[scr]['name']}),
+					_.create.el('SPAN',null,{'text' : scoreListInfo[scr]['score']})
 				]});
 			scoreList.append(li)
 		}
 
-		let clearScoresBtn = _.createEl('BUTTON','btn',{'text' : 'Очистить результаты'});
-		let newGameBtn = _.createEl('BUTTON','btn',{'text' : 'Начать новую игру','style':'margin-top:10px'});
+		let clearScoresBtn = _.create.el('BUTTON','btn',{'text' : 'Очистить результаты'});
+		let newGameBtn = _.create.el('BUTTON','btn',{'text' : 'Начать новую игру','style':'margin-top:10px'});
 		clearScoresBtn.addEventListener('click',function () {
 			_.clearScores(time,steps,score);
 		});
